@@ -281,7 +281,7 @@ bool KateViewSpace::showView(KTextEditor::Document *document)
         // if space is available, add button
         if (m_tabBar->count() < m_tabBar->maxTabCount()) {
             // just insert
-            insertTab(0, document);
+            insertTab(-1, document);
         } else {
             // remove "oldest" button and replace with new one
             Q_ASSERT(m_lruDocList.size() > m_tabBar->count());
@@ -289,10 +289,10 @@ bool KateViewSpace::showView(KTextEditor::Document *document)
             // we need to subtract by 1 more, as we just added ourself to the end of the lru list!
             KTextEditor::Document *docToHide = m_lruDocList[m_lruDocList.size() - m_tabBar->maxTabCount() - 1];
             Q_ASSERT(m_docToTabId.contains(docToHide));
-            removeTab(docToHide, false);
+            const int insertIndex = removeTab(docToHide, false);
 
-            // add new one always at the beginning
-            insertTab(0, document);
+            // add new one always at the end
+            insertTab(-1, document);
         }
     }
 
@@ -415,7 +415,7 @@ void KateViewSpace::addTabs(int count)
         if (m_lruDocList.size() <= tabCount) {
             break;
         }
-        insertTab(tabCount, m_lruDocList[m_lruDocList.size() - tabCount - 1]);
+        insertTab(0, m_lruDocList[m_lruDocList.size() - tabCount - 1]);
         --count;
     }
 
@@ -442,7 +442,7 @@ void KateViewSpace::registerDocument(KTextEditor::Document *doc, bool append)
 
     // if space is available, add button
     if (m_tabBar->count() < m_tabBar->maxTabCount()) {
-        insertTab(0, doc);
+        insertTab(-1, doc);
         updateQuickOpen();
     } else if (append) {
         // remove "oldest" button and replace with new one
@@ -450,10 +450,10 @@ void KateViewSpace::registerDocument(KTextEditor::Document *doc, bool append)
 
         KTextEditor::Document *docToHide = m_lruDocList[m_lruDocList.size() - m_tabBar->maxTabCount() - 1];
         Q_ASSERT(m_docToTabId.contains(docToHide));
-        removeTab(docToHide, false);
+        const int insertIndex = removeTab(docToHide, false);
 
-        // add new one at removed position
-        insertTab(0, doc);
+        // add new one at the end
+        insertTab(-1, doc);
     }
 }
 
@@ -470,14 +470,14 @@ void KateViewSpace::documentDestroyed(QObject *doc)
 
     // case: there was no view created yet, but still a button was added
     if (m_docToTabId.contains(invalidDoc)) {
-        removeTab(invalidDoc, true);
+        const int insertIndex = removeTab(invalidDoc, true);
         // maybe show another tab button in its stead
         if (m_lruDocList.size() >= m_tabBar->maxTabCount() && m_tabBar->count() < m_tabBar->maxTabCount()) {
             KTextEditor::Document *docToShow = m_lruDocList[m_lruDocList.size() - m_tabBar->count() - 1];
             Q_ASSERT(!m_docToTabId.contains(docToShow));
 
             // add tab that now fits into the bar
-            insertTab(m_tabBar->count(), docToShow);
+            insertTab(0, docToShow);
         }
     }
 
