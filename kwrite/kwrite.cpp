@@ -23,6 +23,7 @@
 #include "config.h"
 #include "kwriteapplication.h"
 
+#include <knotifications_version.h>
 #include <ktexteditor/application.h>
 #include <ktexteditor/document.h>
 #include <ktexteditor/editor.h>
@@ -183,6 +184,15 @@ void KWrite::setupActions()
     a = actionCollection()->addAction(QStringLiteral("help_about_editor"));
     a->setText(i18n("&About Editor Component"));
     connect(a, &QAction::triggered, this, &KWrite::aboutEditor);
+
+    // Override text and shortcut for "Configure Editor" action
+    QAction* configureEditor = actionCollection()->action(QStringLiteral("set_confdlg"));
+    configureEditor->setText(i18n("Configure KWrite..."));
+    #if KConfig_VERSION >= QT_VERSION_CHECK(5,64,0)
+    configureEditor->setShortcut(KStandardShortcut::preferences()[0]);
+    #else
+    configureEditor->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Comma));
+    #endif
 }
 
 // load on url
