@@ -45,7 +45,6 @@
 #include <KActionCollection>
 #include <KConfigGroup>
 #include <KSharedConfig>
-#include <KXMLGUIFactory>
 #include <QAction>
 #include <kaboutdata.h>
 #include <klocalizedstring.h>
@@ -78,7 +77,6 @@ KatePluginSymbolViewerView::KatePluginSymbolViewerView(KatePluginSymbolViewer *p
     KXMLGUIClient::setComponentName(QStringLiteral("katesymbolviewer"), i18n("SymbolViewer"));
     setXMLFile(QStringLiteral("ui.rc"));
 
-    mw->guiFactory()->addClient(this);
     m_symbols = nullptr;
 
     // FIXME Let the parser decide which options are available and how they are named
@@ -163,7 +161,6 @@ KatePluginSymbolViewerView::~KatePluginSymbolViewerView()
     // un-register view
     m_plugin->m_views.remove(this);
 
-    m_mainWindow->guiFactory()->removeClient(this);
     delete m_toolview;
     delete m_popup;
 }
@@ -389,9 +386,10 @@ KatePluginSymbolViewer::~KatePluginSymbolViewer()
     // qDebug()<<"~KatePluginSymbolViewer";
 }
 
-QObject *KatePluginSymbolViewer::createView(KTextEditor::MainWindow *mainWindow)
+KTextEditor::Plugin::PluginView KatePluginSymbolViewer::createView(KTextEditor::MainWindow *mainWindow)
 {
-    return new KatePluginSymbolViewerView(this, mainWindow);
+    auto view = new KatePluginSymbolViewerView(this, mainWindow);
+    return KTextEditor::Plugin::PluginView(view, view);
 }
 
 KTextEditor::ConfigPage *KatePluginSymbolViewer::configPage(int, QWidget *parent)

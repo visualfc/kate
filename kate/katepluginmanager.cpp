@@ -28,6 +28,7 @@
 #include <KConfigGroup>
 #include <KPluginFactory>
 #include <KPluginLoader>
+#include <KXMLGUIFactory>
 
 #include <QFile>
 #include <QFileInfo>
@@ -227,25 +228,28 @@ void KatePluginManager::enablePluginGUI(KatePluginInfo *item, KateMainWindow *wi
     }
 
     // lookup if there is already a view for it..
-    QObject *createdView = nullptr;
+    KTextEditor::Plugin::PluginView createdView;
     if (!win->pluginViews().contains(item->plugin)) {
         // create the view + try to correctly load shortcuts, if it's a GUI Client
         createdView = item->plugin->createView(win->wrapper());
-        if (createdView) {
+        if (createdView.object) {
             win->pluginViews().insert(item->plugin, createdView);
+            if (createdView.client) {
+                win->guiFactory()->addClient(createdView.client);
+            }
         }
     }
 
     // load session config if needed
     if (config && win->pluginViews().contains(item->plugin)) {
-        if (auto interface = qobject_cast<KTextEditor::SessionConfigInterface *>(win->pluginViews().value(item->plugin))) {
+        if (auto interface = qobject_cast<KTextEditor::SessionConfigInterface *>(win->pluginViews().value(item->plugin).object)) {
             KConfigGroup group(config, QStringLiteral("Plugin:%1:MainWindow:0").arg(item->saveName()));
             interface->readSessionConfig(group);
         }
     }
 
-    if (createdView) {
-        emit win->wrapper()->pluginViewCreated(item->saveName(), createdView);
+    if (createdView.object) {
+        emit win->wrapper()->pluginViewCreated(item->saveName(), createdView.object);
     }
 }
 
@@ -275,10 +279,11 @@ void KatePluginManager::disablePluginGUI(KatePluginInfo *item, KateMainWindow *w
     }
 
     // really delete the view of this plugin
-    QObject *deletedView = win->pluginViews().value(item->plugin);
-    delete deletedView;
+    KTextEditor::Plugin::PluginView deletedView = win->pluginViews().value(item->plugin);
+    win->guiFactory()->removeClient(deletedView.client);
+    delete deletedView.object;
     win->pluginViews().remove(item->plugin);
-    emit win->wrapper()->pluginViewDeleted(item->saveName(), deletedView);
+    emit win->wrapper()->pluginViewDeleted(item->saveName(), deletedView.object);
 }
 
 void KatePluginManager::disablePluginGUI(KatePluginInfo *item)

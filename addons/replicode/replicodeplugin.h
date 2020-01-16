@@ -33,9 +33,10 @@ public:
     // Destructor
     ~ReplicodePlugin() override;
 
-    QObject *createView(KTextEditor::MainWindow *mainWindow) override
+    KTextEditor::Plugin::PluginView createView(KTextEditor::MainWindow *mainWindow) override
     {
-        return new ReplicodeView(this, mainWindow);
+        auto view = new ReplicodeView(this, mainWindow);
+        return KTextEditor::Plugin::PluginView(view, view);
     }
 
     // Config interface

@@ -29,7 +29,6 @@
 
 #include <KActionCollection>
 #include <KConfigGroup>
-#include <KXMLGUIFactory>
 #include <QMenu>
 
 #include <QStandardPaths>
@@ -137,18 +136,12 @@ KateCTagsView::KateCTagsView(KTextEditor::Plugin *plugin, KTextEditor::MainWindo
     m_toolView->layout()->addWidget(ctagsWidget);
     m_toolView->installEventFilter(this);
 
-    m_mWin->guiFactory()->addClient(this);
-
     m_commonDB = QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QLatin1String("/katectags/common_db");
 }
 
 /******************************************************************/
 KateCTagsView::~KateCTagsView()
 {
-    if (m_mWin && m_mWin->guiFactory()) {
-        m_mWin->guiFactory()->removeClient(this);
-    }
-
     if (m_toolView) {
         delete m_toolView;
     }

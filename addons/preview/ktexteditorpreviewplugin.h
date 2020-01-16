@@ -36,7 +36,7 @@ public:
     ~KTextEditorPreviewPlugin() override;
 
 public: // KTextEditor::Plugin API
-    QObject *createView(KTextEditor::MainWindow *mainWindow) override;
+    KTextEditor::Plugin::PluginView createView(KTextEditor::MainWindow *mainWindow) override;
 };
 
 #endif

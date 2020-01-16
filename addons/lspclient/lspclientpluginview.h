@@ -25,20 +25,15 @@
 #ifndef LSPCLIENTPLUGINVIEW_H
 #define LSPCLIENTPLUGINVIEW_H
 
-#include <QObject>
+#include <KTextEditor/Plugin>
 
 class LSPClientPlugin;
-
-namespace KTextEditor
-{
-class MainWindow;
-}
 
 class LSPClientPluginView
 {
 public:
     // only needs a factory; no other public interface
-    static QObject *new_(LSPClientPlugin *plugin, KTextEditor::MainWindow *mainWin);
+    static KTextEditor::Plugin::PluginView new_(LSPClientPlugin *plugin, KTextEditor::MainWindow *mainWin);
 };
 
 #endif

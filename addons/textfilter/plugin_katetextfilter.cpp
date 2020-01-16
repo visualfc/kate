@@ -34,7 +34,6 @@
 #include <KConfigGroup>
 #include <KPluginFactory>
 #include <KSharedConfig>
-#include <KXMLGUIFactory>
 #include <kactioncollection.h>
 
 #include <qapplication.h>
@@ -59,10 +58,11 @@ PluginKateTextFilter::~PluginKateTextFilter()
     }
 }
 
-QObject *PluginKateTextFilter::createView(KTextEditor::MainWindow *mainWindow)
+KTextEditor::Plugin::PluginView PluginKateTextFilter::createView(KTextEditor::MainWindow *mainWindow)
 {
     // create a plugin view
-    return new PluginViewKateTextFilter(this, mainWindow);
+    auto view = new PluginViewKateTextFilter(this, mainWindow);
+    return KTextEditor::Plugin::PluginView(view, view);
 }
 
 void PluginKateTextFilter::slotFilterReceivedStdout()
@@ -245,15 +245,10 @@ PluginViewKateTextFilter::PluginViewKateTextFilter(PluginKateTextFilter *plugin,
     a->setText(i18n("&Filter Through Command..."));
     actionCollection()->setDefaultShortcut(a, Qt::CTRL + Qt::Key_Backslash);
     connect(a, &QAction::triggered, plugin, &PluginKateTextFilter::slotEditFilter);
-
-    // register us at the UI
-    mainwindow->guiFactory()->addClient(this);
 }
 
 PluginViewKateTextFilter::~PluginViewKateTextFilter()
 {
-    // remove us from the UI again
-    m_mainWindow->guiFactory()->removeClient(this);
 }
 
 // required for TextFilterPluginFactory vtable

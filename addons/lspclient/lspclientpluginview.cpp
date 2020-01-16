@@ -36,7 +36,6 @@
 #include <KActionMenu>
 #include <KLocalizedString>
 #include <KStandardAction>
-#include <KXMLGUIFactory>
 
 #include <KTextEditor/CodeCompletionInterface>
 #include <KTextEditor/Document>
@@ -1791,8 +1790,6 @@ public:
     {
         KXMLGUIClient::setComponentName(QStringLiteral("lspclient"), i18n("LSP Client"));
         setXMLFile(QStringLiteral("ui.rc"));
-
-        m_mainWindow->guiFactory()->addClient(this);
     }
 
     ~LSPClientPluginViewImpl() override
@@ -1803,13 +1800,13 @@ public:
         // so it only remains to clean up lowest level here then prior to removal
         m_actionView.reset();
         m_serverManager.reset();
-        m_mainWindow->guiFactory()->removeClient(this);
     }
 };
 
-QObject *LSPClientPluginView::new_(LSPClientPlugin *plugin, KTextEditor::MainWindow *mainWin)
+KTextEditor::Plugin::PluginView LSPClientPluginView::new_(LSPClientPlugin *plugin, KTextEditor::MainWindow *mainWin)
 {
-    return new LSPClientPluginViewImpl(plugin, mainWin);
+    auto view = new LSPClientPluginViewImpl(plugin, mainWin);
+    return KTextEditor::Plugin::PluginView(view, view);
 }
 
 #include "lspclientpluginview.moc"

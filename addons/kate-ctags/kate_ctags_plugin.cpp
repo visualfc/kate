@@ -49,10 +49,10 @@ KateCTagsPlugin::KateCTagsPlugin(QObject *parent, const QList<QVariant> &)
 }
 
 /******************************************************************/
-QObject *KateCTagsPlugin::createView(KTextEditor::MainWindow *mainWindow)
+KTextEditor::Plugin::PluginView KateCTagsPlugin::createView(KTextEditor::MainWindow *mainWindow)
 {
     m_view = new KateCTagsView(this, mainWindow);
-    return m_view;
+    return KTextEditor::Plugin::PluginView(m_view, m_view);
 }
 
 /******************************************************************/

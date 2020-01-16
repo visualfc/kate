@@ -36,13 +36,13 @@
 #include <ktexteditor/view.h>
 
 #include <KSharedConfig>
-#include <KXMLGUIFactory>
 #include <QAction>
 #include <kactioncollection.h>
 #include <kcombobox.h>
 #include <kconfig.h>
 #include <kconfiggroup.h>
 #include <klocalizedstring.h>
+#include <KXMLGUIFactory>
 
 #include <QApplication>
 #include <QVBoxLayout>
@@ -76,8 +76,6 @@ KateSQLView::KateSQLView(KTextEditor::Plugin *plugin, KTextEditor::MainWindow *m
 
     setupActions();
 
-    m_mainWindow->guiFactory()->addClient(this);
-
     QMenu *sqlMenu = static_cast<QMenu *>(factory()->container(QStringLiteral("SQL"), this));
 
     m_connectionsGroup = new QActionGroup(sqlMenu);
@@ -97,8 +95,6 @@ KateSQLView::KateSQLView(KTextEditor::Plugin *plugin, KTextEditor::MainWindow *m
 
 KateSQLView::~KateSQLView()
 {
-    m_mainWindow->guiFactory()->removeClient(this);
-
     delete m_outputToolView;
     delete m_schemaBrowserToolView;
 

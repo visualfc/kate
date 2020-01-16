@@ -52,7 +52,6 @@
 #include <KPluginFactory>
 #include <KPluginLoader>
 #include <KSharedConfig>
-#include <KXMLGUIFactory>
 #include <kaboutdata.h>
 #include <kpluginfactory.h>
 
@@ -72,10 +71,10 @@ KateKonsolePlugin::~KateKonsolePlugin()
     qputenv("EDITOR", m_previousEditorEnv.data());
 }
 
-QObject *KateKonsolePlugin::createView(KTextEditor::MainWindow *mainWindow)
+KTextEditor::Plugin::PluginView KateKonsolePlugin::createView(KTextEditor::MainWindow *mainWindow)
 {
     KateKonsolePluginView *view = new KateKonsolePluginView(this, mainWindow);
-    return view;
+    return KTextEditor::Plugin::PluginView(view, nullptr);
 }
 
 KTextEditor::ConfigPage *KateKonsolePlugin::configPage(int number, QWidget *parent)
@@ -158,14 +157,11 @@ KateConsole::KateConsole(KateKonsolePlugin *plugin, KTextEditor::MainWindow *mw,
     actionCollection()->setDefaultShortcut(a, QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_F4));
     connect(a, &QAction::triggered, this, &KateConsole::slotToggleFocus);
 
-    m_mw->guiFactory()->addClient(this);
-
     readConfig();
 }
 
 KateConsole::~KateConsole()
 {
-    m_mw->guiFactory()->removeClient(this);
     if (m_part)
         disconnect(m_part, &KParts::ReadOnlyPart::destroyed, this, &KateConsole::slotDestroyed);
 }

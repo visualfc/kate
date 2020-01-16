@@ -44,7 +44,6 @@
 
 #include <KActionCollection>
 #include <KTextEditor/Application>
-#include <KXMLGUIFactory>
 
 #include <kmessagebox.h>
 
@@ -100,9 +99,10 @@ KateBuildPlugin::KateBuildPlugin(QObject *parent, const VariantList &)
 }
 
 /******************************************************************/
-QObject *KateBuildPlugin::createView(KTextEditor::MainWindow *mainWindow)
+KTextEditor::Plugin::PluginView KateBuildPlugin::createView(KTextEditor::MainWindow *mainWindow)
 {
-    return new KateBuildView(this, mainWindow);
+    auto view = new KateBuildView(this, mainWindow);
+    return KTextEditor::Plugin::PluginView(view, view);
 }
 
 /******************************************************************/
@@ -212,8 +212,6 @@ KateBuildView::KateBuildView(KTextEditor::Plugin *plugin, KTextEditor::MainWindo
 
     m_toolView->installEventFilter(this);
 
-    m_win->guiFactory()->addClient(this);
-
     // watch for project plugin view creation/deletion
     connect(m_win, &KTextEditor::MainWindow::pluginViewCreated, this, &KateBuildView::slotPluginViewCreated);
     connect(m_win, &KTextEditor::MainWindow::pluginViewDeleted, this, &KateBuildView::slotPluginViewDeleted);
@@ -226,7 +224,6 @@ KateBuildView::KateBuildView(KTextEditor::Plugin *plugin, KTextEditor::MainWindo
 /******************************************************************/
 KateBuildView::~KateBuildView()
 {
-    m_win->guiFactory()->removeClient(this);
     delete m_toolView;
 }
 

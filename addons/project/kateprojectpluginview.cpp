@@ -29,7 +29,6 @@
 #include <ktexteditor/view.h>
 
 #include <KLocalizedString>
-#include <KXMLGUIFactory>
 #include <kaboutdata.h>
 #include <kactioncollection.h>
 #include <kactionmenu.h>
@@ -136,11 +135,6 @@ KateProjectPluginView::KateProjectPluginView(KateProjectPlugin *plugin, KTextEdi
     connect(popup->menu(), &QMenu::aboutToShow, this, &KateProjectPluginView::slotContextMenuAboutToShow);
 
     /**
-     * add us to gui
-     */
-    m_mainWindow->guiFactory()->addClient(this);
-
-    /**
      * align to current config
      */
     slotConfigUpdated();
@@ -167,11 +161,6 @@ KateProjectPluginView::~KateProjectPluginView()
     m_toolInfoView = nullptr;
     delete m_toolMultiView;
     m_toolMultiView = nullptr;
-
-    /**
-     * cu gui client
-     */
-    m_mainWindow->guiFactory()->removeClient(this);
 }
 
 void KateProjectPluginView::slotConfigUpdated()

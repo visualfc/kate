@@ -29,7 +29,6 @@
 #include <KActionCollection>
 #include <KLocalizedString>
 #include <KPluginFactory>
-#include <KXMLGUIFactory>
 
 #include <KTextEditor/CodeCompletionInterface>
 
@@ -45,10 +44,10 @@ KateSnippetsPlugin::~KateSnippetsPlugin()
 {
 }
 
-QObject *KateSnippetsPlugin::createView(KTextEditor::MainWindow *mainWindow)
+KTextEditor::Plugin::PluginView KateSnippetsPlugin::createView(KTextEditor::MainWindow *mainWindow)
 {
     KateSnippetsPluginView *view = new KateSnippetsPluginView(this, mainWindow);
-    return view;
+    return KTextEditor::Plugin::PluginView(view, view);
 }
 
 KateSnippetsPluginView::KateSnippetsPluginView(KateSnippetsPlugin *plugin, KTextEditor::MainWindow *mainWindow)
@@ -85,11 +84,6 @@ KateSnippetsPluginView::KateSnippetsPluginView(KateSnippetsPlugin *plugin, KText
     for (KTextEditor::View *view : views) {
         slotViewCreated(view);
     }
-
-    // register if factory around
-    if (auto factory = m_mainWindow->guiFactory()) {
-        factory->addClient(this);
-    }
 }
 
 KateSnippetsPluginView::~KateSnippetsPluginView()
@@ -101,11 +95,6 @@ KateSnippetsPluginView::~KateSnippetsPluginView()
         }
         auto iface = qobject_cast<KTextEditor::CodeCompletionInterface *>(view);
         iface->unregisterCompletionModel(KateSnippetGlobal::self()->completionModel());
-    }
-
-    // unregister if factory around
-    if (auto factory = m_mainWindow->guiFactory()) {
-        factory->removeClient(this);
     }
 
     if (m_toolView) {

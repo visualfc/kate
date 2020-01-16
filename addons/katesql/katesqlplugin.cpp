@@ -40,13 +40,13 @@ KateSQLPlugin::~KateSQLPlugin()
 {
 }
 
-QObject *KateSQLPlugin::createView(KTextEditor::MainWindow *mainWindow)
+KTextEditor::Plugin::PluginView KateSQLPlugin::createView(KTextEditor::MainWindow *mainWindow)
 {
     KateSQLView *view = new KateSQLView(this, mainWindow);
 
     connect(this, &KateSQLPlugin::globalSettingsChanged, view, &KateSQLView::slotGlobalSettingsChanged);
 
-    return view;
+    return KTextEditor::Plugin::PluginView(view, view);
 }
 
 KTextEditor::ConfigPage *KateSQLPlugin::configPage(int number, QWidget *parent)

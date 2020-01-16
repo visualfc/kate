@@ -92,7 +92,6 @@ TODO:
 #include <kmessagebox.h>
 #include <kpluginfactory.h>
 #include <kxmlguiclient.h>
-#include <kxmlguifactory.h>
 
 K_PLUGIN_FACTORY_WITH_JSON(PluginKateXMLToolsFactory, "katexmltools.json", registerPlugin<PluginKateXMLTools>();)
 
@@ -105,9 +104,10 @@ PluginKateXMLTools::~PluginKateXMLTools()
 {
 }
 
-QObject *PluginKateXMLTools::createView(KTextEditor::MainWindow *mainWindow)
+KTextEditor::Plugin::PluginView PluginKateXMLTools::createView(KTextEditor::MainWindow *mainWindow)
 {
-    return new PluginKateXMLToolsView(mainWindow);
+    auto view = new PluginKateXMLToolsView(mainWindow);
+    return KTextEditor::Plugin::PluginView(view, view);
 }
 
 PluginKateXMLToolsView::PluginKateXMLToolsView(KTextEditor::MainWindow *mainWin)
@@ -135,15 +135,11 @@ PluginKateXMLToolsView::PluginKateXMLToolsView(KTextEditor::MainWindow *mainWin)
     connect(actionAssignDTD, &QAction::triggered, &m_model, &PluginKateXMLToolsCompletionModel::getDTD);
     actionCollection()->addAction(QStringLiteral("xml_tool_assign"), actionAssignDTD);
 
-    mainWin->guiFactory()->addClient(this);
-
     connect(KTextEditor::Editor::instance()->application(), &KTextEditor::Application::documentDeleted, &m_model, &PluginKateXMLToolsCompletionModel::slotDocumentDeleted);
 }
 
 PluginKateXMLToolsView::~PluginKateXMLToolsView()
 {
-    m_mainWindow->guiFactory()->removeClient(this);
-
     // qDebug() << "xml tools destructor 1...";
     // TODO: unregister the model
 }

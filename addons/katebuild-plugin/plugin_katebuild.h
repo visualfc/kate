@@ -174,7 +174,7 @@ public:
     {
     }
 
-    QObject *createView(KTextEditor::MainWindow *mainWindow) override;
+    KTextEditor::Plugin::PluginView createView(KTextEditor::MainWindow *mainWindow) override;
 };
 
 #endif

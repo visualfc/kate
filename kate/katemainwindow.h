@@ -233,7 +233,7 @@ Q_SIGNALS:
 public:
     void openUrl(const QString &name = QString());
 
-    QHash<KTextEditor::Plugin *, QObject *> &pluginViews()
+    QHash<KTextEditor::Plugin *, KTextEditor::Plugin::PluginView> &pluginViews()
     {
         return m_pluginViews;
     }
@@ -324,15 +324,6 @@ public Q_SLOTS:
     QWidget *window()
     {
         return this;
-    }
-
-    /**
-     * Accessor to the XMLGUIFactory.
-     * \return the mainwindow's KXMLGUIFactory.
-     */
-    KXMLGUIFactory *guiFactory() override
-    {
-        return KateMDI::MainWindow::guiFactory();
     }
 
     /**
@@ -567,7 +558,7 @@ private:
     bool m_modignore;
 
     // all plugin views for this mainwindow, used by the pluginmanager
-    QHash<KTextEditor::Plugin *, QObject *> m_pluginViews;
+    QHash<KTextEditor::Plugin *, KTextEditor::Plugin::PluginView> m_pluginViews;
 
     // options: show statusbar + show path
     KToggleAction *m_paShowPath;

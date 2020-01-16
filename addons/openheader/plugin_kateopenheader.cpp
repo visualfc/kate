@@ -26,7 +26,6 @@
 
 #include <KIO/StatJob>
 #include <KJobWidgets>
-#include <KXMLGUIFactory>
 #include <QAction>
 #include <QDir>
 #include <QFileInfo>
@@ -51,12 +50,10 @@ PluginViewKateOpenHeader::PluginViewKateOpenHeader(PluginKateOpenHeader *plugin,
     a->setText(i18n("Open .h/.cpp/.c"));
     actionCollection()->setDefaultShortcut(a, Qt::Key_F12);
     connect(a, &QAction::triggered, plugin, &PluginKateOpenHeader::slotOpenHeader);
-    mainwindow->guiFactory()->addClient(this);
 }
 
 PluginViewKateOpenHeader::~PluginViewKateOpenHeader()
 {
-    m_mainWindow->guiFactory()->removeClient(this);
 }
 
 PluginKateOpenHeader::PluginKateOpenHeader(QObject *parent, const QList<QVariant> &)
@@ -68,9 +65,10 @@ PluginKateOpenHeader::~PluginKateOpenHeader()
 {
 }
 
-QObject *PluginKateOpenHeader::createView(KTextEditor::MainWindow *mainWindow)
+KTextEditor::Plugin::PluginView PluginKateOpenHeader::createView(KTextEditor::MainWindow *mainWindow)
 {
-    return new PluginViewKateOpenHeader(this, mainWindow);
+    auto view = new PluginViewKateOpenHeader(this, mainWindow);
+    return KTextEditor::Plugin::PluginView(view, view);
 }
 
 void PluginKateOpenHeader::slotOpenHeader()

@@ -34,7 +34,6 @@
 #include <KLocalizedString>
 #include <KPluginFactory>
 #include <KToolBar>
-#include <KXMLGUIFactory>
 #include <KXmlGuiWindow>
 
 #include <QAction>
@@ -60,13 +59,13 @@ KateFileTreePlugin::~KateFileTreePlugin()
     m_settings.save();
 }
 
-QObject *KateFileTreePlugin::createView(KTextEditor::MainWindow *mainWindow)
+KTextEditor::Plugin::PluginView KateFileTreePlugin::createView(KTextEditor::MainWindow *mainWindow)
 {
     KateFileTreePluginView *view = new KateFileTreePluginView(mainWindow, this);
     connect(view, &KateFileTreePluginView::destroyed, this, &KateFileTreePlugin::viewDestroyed);
     m_views.append(view);
 
-    return view;
+    return KTextEditor::Plugin::PluginView(view, view);
 }
 
 void KateFileTreePlugin::viewDestroyed(QObject *view)
@@ -191,8 +190,6 @@ KateFileTreePluginView::KateFileTreePluginView(KTextEditor::MainWindow *mainWind
     //
     setupActions();
 
-    mainWindow->guiFactory()->addClient(this);
-
     m_proxyModel->setSortRole(Qt::DisplayRole);
 
     m_proxyModel->sort(0, Qt::AscendingOrder);
@@ -201,8 +198,6 @@ KateFileTreePluginView::KateFileTreePluginView(KTextEditor::MainWindow *mainWind
 
 KateFileTreePluginView::~KateFileTreePluginView()
 {
-    m_mainWindow->guiFactory()->removeClient(this);
-
     // clean up tree and toolview
     delete m_fileTree->parentWidget();
     // delete m_toolView;

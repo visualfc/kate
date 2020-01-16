@@ -107,7 +107,7 @@ public:
     {
     }
     /// Create a new view of this plugin for the given main window
-    QObject *createView(KTextEditor::MainWindow *) override;
+    KTextEditor::Plugin::PluginView createView(KTextEditor::MainWindow *) override;
     /// \name Plugin interface implementation
     //@{
     void readSessionConfig(const KConfigGroup &) override;

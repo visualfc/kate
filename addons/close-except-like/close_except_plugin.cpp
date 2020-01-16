@@ -35,7 +35,6 @@
 #include <KTextEditor/Application>
 #include <KTextEditor/Editor>
 #include <KTextEditor/MainWindow>
-#include <KXMLGUIFactory>
 #include <QFileInfo>
 #include <QUrl>
 #include <kio/global.h>
@@ -50,9 +49,10 @@ CloseExceptPlugin::CloseExceptPlugin(QObject *application, const QList<QVariant>
 {
 }
 
-QObject *CloseExceptPlugin::createView(KTextEditor::MainWindow *parent)
+KTextEditor::Plugin::PluginView CloseExceptPlugin::createView(KTextEditor::MainWindow *parent)
 {
-    return new CloseExceptPluginView(parent, this);
+    auto view = new CloseExceptPluginView(parent, this);
+    return KTextEditor::Plugin::PluginView(view, view);
 }
 
 void CloseExceptPlugin::readSessionConfig(const KConfigGroup &config)
@@ -93,13 +93,10 @@ CloseExceptPluginView::CloseExceptPluginView(KTextEditor::MainWindow *mw, CloseE
     connect(m_mainWindow, &KTextEditor::MainWindow::viewCreated, this, &CloseExceptPluginView::viewCreated);
     // Fill menu w/ currently opened document masks/groups
     updateMenu();
-
-    m_mainWindow->guiFactory()->addClient(this);
 }
 
 CloseExceptPluginView::~CloseExceptPluginView()
 {
-    m_mainWindow->guiFactory()->removeClient(this);
 }
 
 void CloseExceptPluginView::viewCreated(KTextEditor::View *view)

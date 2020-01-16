@@ -51,7 +51,7 @@ public:
     explicit KateKonsolePlugin(QObject *parent = nullptr, const QList<QVariant> & = QList<QVariant>());
     ~KateKonsolePlugin() override;
 
-    QObject *createView(KTextEditor::MainWindow *mainWindow) override;
+    KTextEditor::Plugin::PluginView createView(KTextEditor::MainWindow *mainWindow) override;
 
     int configPages() const override
     {

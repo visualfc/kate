@@ -42,7 +42,6 @@
 #include <kurlcompletion.h>
 
 #include <KConfigGroup>
-#include <KXMLGUIFactory>
 
 #include <QClipboard>
 #include <QComboBox>
@@ -234,7 +233,7 @@ KatePluginSearch::~KatePluginSearch()
     delete m_searchCommand;
 }
 
-QObject *KatePluginSearch::createView(KTextEditor::MainWindow *mainWindow)
+KTextEditor::Plugin::PluginView KatePluginSearch::createView(KTextEditor::MainWindow *mainWindow)
 {
     KatePluginSearchView *view = new KatePluginSearchView(this, mainWindow, KTextEditor::Editor::instance()->application());
     connect(m_searchCommand, &KateSearchCommand::setSearchPlace, view, &KatePluginSearchView::setSearchPlace);
@@ -242,7 +241,7 @@ QObject *KatePluginSearch::createView(KTextEditor::MainWindow *mainWindow)
     connect(m_searchCommand, &KateSearchCommand::setSearchString, view, &KatePluginSearchView::setSearchString);
     connect(m_searchCommand, &KateSearchCommand::startSearch, view, &KatePluginSearchView::startSearch);
     connect(m_searchCommand, SIGNAL(newTab()), view, SLOT(addTab()));
-    return view;
+    return KTextEditor::Plugin::PluginView(view, view);
 }
 
 bool ContainerWidget::focusNextPrevChild(bool next)
@@ -536,8 +535,6 @@ KatePluginSearchView::KatePluginSearchView(KTextEditor::Plugin *plugin, KTextEdi
 
     m_toolView->installEventFilter(this);
 
-    m_mainWindow->guiFactory()->addClient(this);
-
     m_updateSumaryTimer.setInterval(1);
     m_updateSumaryTimer.setSingleShot(true);
     connect(&m_updateSumaryTimer, &QTimer::timeout, this, &KatePluginSearchView::updateResultsRootItem);
@@ -547,7 +544,6 @@ KatePluginSearchView::~KatePluginSearchView()
 {
     clearMarks();
 
-    m_mainWindow->guiFactory()->removeClient(this);
     delete m_toolView;
 }
 

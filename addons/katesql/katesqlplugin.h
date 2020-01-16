@@ -35,7 +35,7 @@ public:
 
     ~KateSQLPlugin() override;
 
-    QObject *createView(KTextEditor::MainWindow *mainWindow) override;
+    KTextEditor::Plugin::PluginView createView(KTextEditor::MainWindow *mainWindow) override;
 
     int configPages() const override
     {

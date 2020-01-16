@@ -40,12 +40,12 @@ KateFileBrowserPlugin::KateFileBrowserPlugin(QObject *parent, const QList<QVaria
 {
 }
 
-QObject *KateFileBrowserPlugin::createView(KTextEditor::MainWindow *mainWindow)
+KTextEditor::Plugin::PluginView KateFileBrowserPlugin::createView(KTextEditor::MainWindow *mainWindow)
 {
     KateFileBrowserPluginView *view = new KateFileBrowserPluginView(this, mainWindow);
     connect(view, &KateFileBrowserPluginView::destroyed, this, &KateFileBrowserPlugin::viewDestroyed);
     m_views.append(view);
-    return view;
+    return KTextEditor::Plugin::PluginView(view, nullptr);
 }
 
 void KateFileBrowserPlugin::viewDestroyed(QObject *view)

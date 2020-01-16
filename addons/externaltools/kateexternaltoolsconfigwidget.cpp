@@ -33,7 +33,6 @@
 #include <KIconLoader>
 #include <KMimeTypeChooser>
 #include <KSharedConfig>
-#include <KXMLGUIFactory>
 #include <KXmlGuiWindow>
 #include <QBitmap>
 #include <QComboBox>

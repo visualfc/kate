@@ -35,7 +35,6 @@
 
 #include <KActionCollection>
 #include <KConfigGroup>
-#include <KXMLGUIFactory>
 #include <QAction>
 #include <QMenu>
 
@@ -63,9 +62,10 @@ KatePluginGDB::~KatePluginGDB()
 {
 }
 
-QObject *KatePluginGDB::createView(KTextEditor::MainWindow *mainWindow)
+KTextEditor::Plugin::PluginView KatePluginGDB::createView(KTextEditor::MainWindow *mainWindow)
 {
-    return new KatePluginGDBView(this, mainWindow);
+    auto view = new KatePluginGDBView(this, mainWindow);
+    return KTextEditor::Plugin::PluginView(view, view);
 }
 
 KatePluginGDBView::KatePluginGDBView(KTextEditor::Plugin *plugin, KTextEditor::MainWindow *mainWin)
@@ -260,13 +260,10 @@ KatePluginGDBView::KatePluginGDBView(KTextEditor::Plugin *plugin, KTextEditor::M
     connect(m_mainWin, &KTextEditor::MainWindow::unhandledShortcutOverride, this, &KatePluginGDBView::handleEsc);
 
     m_toolView->installEventFilter(this);
-
-    m_mainWin->guiFactory()->addClient(this);
 }
 
 KatePluginGDBView::~KatePluginGDBView()
 {
-    m_mainWin->guiFactory()->removeClient(this);
     delete m_toolView;
     delete m_localsStackToolView;
 }

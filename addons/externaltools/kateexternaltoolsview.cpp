@@ -32,9 +32,9 @@
 #include <KConfigGroup>
 #include <KLocalizedString>
 #include <KSharedConfig>
-#include <KXMLGUIFactory>
 #include <QMenu>
 #include <QStandardPaths>
+#include <KXMLGUIFactory>
 
 #include <QFontDatabase>
 #include <QKeyEvent>
@@ -157,8 +157,6 @@ KateExternalToolsPluginView::KateExternalToolsPluginView(KTextEditor::MainWindow
         m_externalToolsMenu->setWhatsThis(i18n("Launch external helper applications"));
     }
 
-    mainWindow->guiFactory()->addClient(this);
-
     // ESC should close & hide ToolView
     connect(m_mainWindow, &KTextEditor::MainWindow::unhandledShortcutOverride, this, &KateExternalToolsPluginView::handleEsc);
 }
@@ -166,8 +164,6 @@ KateExternalToolsPluginView::KateExternalToolsPluginView(KTextEditor::MainWindow
 KateExternalToolsPluginView::~KateExternalToolsPluginView()
 {
     m_plugin->unregisterPluginView(this);
-
-    m_mainWindow->guiFactory()->removeClient(this);
 
     deleteToolView();
 

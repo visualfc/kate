@@ -35,9 +35,10 @@ KTextEditorPreviewPlugin::KTextEditorPreviewPlugin(QObject *parent, const QVaria
 
 KTextEditorPreviewPlugin::~KTextEditorPreviewPlugin() = default;
 
-QObject *KTextEditorPreviewPlugin::createView(KTextEditor::MainWindow *mainwindow)
+KTextEditor::Plugin::PluginView KTextEditorPreviewPlugin::createView(KTextEditor::MainWindow *mainwindow)
 {
-    return new KTextEditorPreviewView(this, mainwindow);
+    auto view = new KTextEditorPreviewView(this, mainwindow);
+    return KTextEditor::Plugin::PluginView(view, nullptr);
 }
 
 // needed for K_PLUGIN_FACTORY_WITH_JSON

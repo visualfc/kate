@@ -26,7 +26,6 @@
 #include <QTemporaryFile>
 #include <QtGlobal>
 
-#include <KXMLGUIFactory>
 #include <klocalizedstring.h>
 
 #include <QAction>
@@ -80,13 +79,11 @@ ReplicodeView::ReplicodeView(KTextEditor::Plugin *plugin, KTextEditor::MainWindo
     connect(m_runButton, &QPushButton::clicked, m_runAction, &QAction::trigger);
     connect(m_stopButton, &QPushButton::clicked, m_stopAction, &QAction::trigger);
 
-    m_mainWindow->guiFactory()->addClient(this);
     connect(m_mainWindow, &KTextEditor::MainWindow::viewChanged, this, &ReplicodeView::viewChanged);
 }
 
 ReplicodeView::~ReplicodeView()
 {
-    m_mainWindow->guiFactory()->removeClient(this);
     delete m_executor;
 }
 

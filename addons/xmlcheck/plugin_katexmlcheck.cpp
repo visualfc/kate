@@ -81,8 +81,6 @@
 #include <ktexteditor/editor.h>
 #include <ktexteditor/mainwindow.h>
 
-#include <kxmlguifactory.h>
-
 K_PLUGIN_FACTORY_WITH_JSON(PluginKateXMLCheckFactory, "katexmlcheck.json", registerPlugin<PluginKateXMLCheck>();)
 
 PluginKateXMLCheck::PluginKateXMLCheck(QObject *const parent, const QVariantList &)
@@ -95,9 +93,10 @@ PluginKateXMLCheck::~PluginKateXMLCheck()
 {
 }
 
-QObject *PluginKateXMLCheck::createView(KTextEditor::MainWindow *mainWindow)
+KTextEditor::Plugin::PluginView PluginKateXMLCheck::createView(KTextEditor::MainWindow *mainWindow)
 {
-    return new PluginKateXMLCheckView(this, mainWindow);
+    auto view = new PluginKateXMLCheckView(this, mainWindow);
+    return KTextEditor::Plugin::PluginView(view, view);
 }
 
 //---------------------------------
@@ -147,12 +146,10 @@ PluginKateXMLCheckView::PluginKateXMLCheckView(KTextEditor::Plugin *plugin, KTex
     // we currently only want errors:
     m_proc.setProcessChannelMode(QProcess::SeparateChannels);
     // m_proc.setProcessChannelMode(QProcess::ForwardedChannels); // For Debugging. Do not use this.
-    mainwin->guiFactory()->addClient(this);
 }
 
 PluginKateXMLCheckView::~PluginKateXMLCheckView()
 {
-    m_mainWindow->guiFactory()->removeClient(this);
     delete m_tmp_file;
     delete dock;
 }

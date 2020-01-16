@@ -36,7 +36,7 @@ public:
     explicit PluginKateOpenHeader(QObject *parent = nullptr, const QList<QVariant> & = QList<QVariant>());
     ~PluginKateOpenHeader() override;
 
-    QObject *createView(KTextEditor::MainWindow *mainWindow) override;
+    KTextEditor::Plugin::PluginView createView(KTextEditor::MainWindow *mainWindow) override;
 
 public Q_SLOTS:
     void slotOpenHeader();

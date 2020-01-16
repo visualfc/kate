@@ -30,7 +30,6 @@
 #include <KActionCollection>
 #include <KLocalizedString>
 #include <KPluginFactory>
-#include <KXMLGUIFactory>
 
 #include <QAction>
 #include <QScrollBar>
@@ -43,9 +42,10 @@ TabSwitcherPlugin::TabSwitcherPlugin(QObject *parent, const QList<QVariant> &)
 {
 }
 
-QObject *TabSwitcherPlugin::createView(KTextEditor::MainWindow *mainWindow)
+KTextEditor::Plugin::PluginView TabSwitcherPlugin::createView(KTextEditor::MainWindow *mainWindow)
 {
-    return new TabSwitcherPluginView(this, mainWindow);
+    auto view = new TabSwitcherPluginView(this, mainWindow);
+    return KTextEditor::Plugin::PluginView(view, view);
 }
 
 TabSwitcherPluginView::TabSwitcherPluginView(TabSwitcherPlugin *plugin, KTextEditor::MainWindow *mainWindow)
@@ -69,9 +69,6 @@ TabSwitcherPluginView::TabSwitcherPluginView(TabSwitcherPlugin *plugin, KTextEdi
     // fill the model
     setupModel();
 
-    // register action in menu
-    m_mainWindow->guiFactory()->addClient(this);
-
     // popup connections
     connect(m_treeView, &TabSwitcherTreeView::pressed, this, &TabSwitcherPluginView::switchToClicked);
     connect(m_treeView, &TabSwitcherTreeView::itemActivated, this, &TabSwitcherPluginView::activateView);
@@ -89,9 +86,6 @@ TabSwitcherPluginView::~TabSwitcherPluginView()
 {
     // delete popup widget
     delete m_treeView;
-
-    // unregister action in menu
-    m_mainWindow->guiFactory()->removeClient(this);
 
     // unregister this view
     m_plugin->m_views.removeAll(this);

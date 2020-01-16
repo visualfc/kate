@@ -38,7 +38,6 @@
 #include <KConfig>
 #include <KConfigGroup>
 #include <KPluginFactory>
-#include <KXMLGUIFactory>
 
 #include <QClipboard>
 #include <QGuiApplication>
@@ -76,11 +75,11 @@ KateExternalToolsPlugin::~KateExternalToolsPlugin()
     clearTools();
 }
 
-QObject *KateExternalToolsPlugin::createView(KTextEditor::MainWindow *mainWindow)
+KTextEditor::Plugin::PluginView KateExternalToolsPlugin::createView(KTextEditor::MainWindow *mainWindow)
 {
     KateExternalToolsPluginView *view = new KateExternalToolsPluginView(mainWindow, this);
     connect(this, &KateExternalToolsPlugin::externalToolsChanged, view, &KateExternalToolsPluginView::rebuildMenu);
-    return view;
+    return KTextEditor::Plugin::PluginView(view, view);
 }
 
 void KateExternalToolsPlugin::clearTools()
@@ -169,9 +168,9 @@ void KateExternalToolsPlugin::runTool(const KateExternalTool &tool, KTextEditor:
             view->document()->save();
         }
     } else if (tool.saveMode == KateExternalTool::SaveMode::AllDocuments) {
-        const auto guiClients = mw->guiFactory()->clients();
-        for (KXMLGUIClient *client : guiClients) {
-            if (QAction *a = client->actionCollection()->action(QStringLiteral("file_save_all"))) {
+        const auto actionCollections = mw->window()->findChildren<KActionCollection*>();
+        for (KActionCollection *ac : actionCollections) {
+            if (QAction *a = ac->action(QStringLiteral("file_save_all"))) {
                 a->trigger();
                 break;
             }
