@@ -42,7 +42,7 @@ public:
     {
     }
 
-    KTextEditor::Plugin::PluginView createView(KTextEditor::MainWindow *mainWindow) override;
+    QObject *createView(KTextEditor::MainWindow *mainWindow) override;
 
     int configPages() const override;
     KTextEditor::ConfigPage *configPage(int number = 0, QWidget *parent = nullptr) override;

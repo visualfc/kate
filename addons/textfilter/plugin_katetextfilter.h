@@ -40,7 +40,7 @@ public:
 
     ~PluginKateTextFilter() override;
 
-     KTextEditor::Plugin::PluginView createView(KTextEditor::MainWindow *mainWindow) override;
+    QObject *createView(KTextEditor::MainWindow *mainWindow) override;
 
     void runFilter(KTextEditor::View *kv, const QString &filter);
 

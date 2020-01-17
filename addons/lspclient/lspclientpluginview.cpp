@@ -1803,10 +1803,9 @@ public:
     }
 };
 
-KTextEditor::Plugin::PluginView LSPClientPluginView::new_(LSPClientPlugin *plugin, KTextEditor::MainWindow *mainWin)
+QObject *LSPClientPluginView::new_(LSPClientPlugin *plugin, KTextEditor::MainWindow *mainWin)
 {
-    auto view = new LSPClientPluginViewImpl(plugin, mainWin);
-    return KTextEditor::Plugin::PluginView(view, view);
+    return new LSPClientPluginViewImpl(plugin, mainWin);
 }
 
 #include "lspclientpluginview.moc"

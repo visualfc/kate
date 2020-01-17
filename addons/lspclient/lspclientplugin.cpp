@@ -80,7 +80,7 @@ LSPClientPlugin::~LSPClientPlugin()
 {
 }
 
-KTextEditor::Plugin::PluginView LSPClientPlugin::createView(KTextEditor::MainWindow *mainWindow)
+QObject *LSPClientPlugin::createView(KTextEditor::MainWindow *mainWindow)
 {
     return LSPClientPluginView::new_(this, mainWindow);
 }

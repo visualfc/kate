@@ -93,10 +93,9 @@ PluginKateXMLCheck::~PluginKateXMLCheck()
 {
 }
 
-KTextEditor::Plugin::PluginView PluginKateXMLCheck::createView(KTextEditor::MainWindow *mainWindow)
+QObject *PluginKateXMLCheck::createView(KTextEditor::MainWindow *mainWindow)
 {
-    auto view = new PluginKateXMLCheckView(this, mainWindow);
-    return KTextEditor::Plugin::PluginView(view, view);
+    return new PluginKateXMLCheckView(this, mainWindow);
 }
 
 //---------------------------------

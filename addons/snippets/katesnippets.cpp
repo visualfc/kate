@@ -44,10 +44,10 @@ KateSnippetsPlugin::~KateSnippetsPlugin()
 {
 }
 
-KTextEditor::Plugin::PluginView KateSnippetsPlugin::createView(KTextEditor::MainWindow *mainWindow)
+QObject *KateSnippetsPlugin::createView(KTextEditor::MainWindow *mainWindow)
 {
     KateSnippetsPluginView *view = new KateSnippetsPluginView(this, mainWindow);
-    return KTextEditor::Plugin::PluginView(view, view);
+    return view;
 }
 
 KateSnippetsPluginView::KateSnippetsPluginView(KateSnippetsPlugin *plugin, KTextEditor::MainWindow *mainWindow)

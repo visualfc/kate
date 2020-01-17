@@ -45,7 +45,7 @@ public:
 
     static KateBtBrowserPlugin &self();
 
-    KTextEditor::Plugin::PluginView createView(KTextEditor::MainWindow *mainWindow) override;
+    QObject *createView(KTextEditor::MainWindow *mainWindow) override;
 
     KateBtDatabase &database();
     BtFileIndexer &fileIndexer();

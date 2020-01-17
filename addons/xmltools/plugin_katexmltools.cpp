@@ -104,10 +104,9 @@ PluginKateXMLTools::~PluginKateXMLTools()
 {
 }
 
-KTextEditor::Plugin::PluginView PluginKateXMLTools::createView(KTextEditor::MainWindow *mainWindow)
+QObject *PluginKateXMLTools::createView(KTextEditor::MainWindow *mainWindow)
 {
-    auto view = new PluginKateXMLToolsView(mainWindow);
-    return KTextEditor::Plugin::PluginView(view, view);
+    return new PluginKateXMLToolsView(mainWindow);
 }
 
 PluginKateXMLToolsView::PluginKateXMLToolsView(KTextEditor::MainWindow *mainWin)

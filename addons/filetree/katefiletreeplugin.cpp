@@ -59,13 +59,13 @@ KateFileTreePlugin::~KateFileTreePlugin()
     m_settings.save();
 }
 
-KTextEditor::Plugin::PluginView KateFileTreePlugin::createView(KTextEditor::MainWindow *mainWindow)
+QObject *KateFileTreePlugin::createView(KTextEditor::MainWindow *mainWindow)
 {
     KateFileTreePluginView *view = new KateFileTreePluginView(mainWindow, this);
     connect(view, &KateFileTreePluginView::destroyed, this, &KateFileTreePlugin::viewDestroyed);
     m_views.append(view);
 
-    return KTextEditor::Plugin::PluginView(view, view);
+    return view;
 }
 
 void KateFileTreePlugin::viewDestroyed(QObject *view)

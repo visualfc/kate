@@ -77,10 +77,9 @@ KateBtBrowserPlugin &KateBtBrowserPlugin::self()
     return *s_self;
 }
 
-KTextEditor::Plugin::PluginView KateBtBrowserPlugin::createView(KTextEditor::MainWindow *mainWindow)
+QObject *KateBtBrowserPlugin::createView(KTextEditor::MainWindow *mainWindow)
 {
-    KateBtBrowserPluginView *view = new KateBtBrowserPluginView(this, mainWindow);
-    return KTextEditor::Plugin::PluginView(view, nullptr);
+    return new KateBtBrowserPluginView(this, mainWindow);
 }
 
 KateBtDatabase &KateBtBrowserPlugin::database()

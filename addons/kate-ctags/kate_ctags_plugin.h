@@ -43,7 +43,7 @@ public:
     {
     }
 
-    KTextEditor::Plugin::PluginView createView(KTextEditor::MainWindow *mainWindow) override;
+    QObject *createView(KTextEditor::MainWindow *mainWindow) override;
 
     int configPages() const override
     {

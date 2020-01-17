@@ -75,11 +75,11 @@ KateExternalToolsPlugin::~KateExternalToolsPlugin()
     clearTools();
 }
 
-KTextEditor::Plugin::PluginView KateExternalToolsPlugin::createView(KTextEditor::MainWindow *mainWindow)
+QObject *KateExternalToolsPlugin::createView(KTextEditor::MainWindow *mainWindow)
 {
     KateExternalToolsPluginView *view = new KateExternalToolsPluginView(mainWindow, this);
     connect(this, &KateExternalToolsPlugin::externalToolsChanged, view, &KateExternalToolsPluginView::rebuildMenu);
-    return KTextEditor::Plugin::PluginView(view, view);
+    return view;
 }
 
 void KateExternalToolsPlugin::clearTools()

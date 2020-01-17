@@ -50,7 +50,7 @@ public:
     explicit KatePluginGDB(QObject *parent = nullptr, const VariantList & = VariantList());
     ~KatePluginGDB() override;
 
-    KTextEditor::Plugin::PluginView createView(KTextEditor::MainWindow *mainWindow) override;
+    QObject *createView(KTextEditor::MainWindow *mainWindow) override;
 };
 
 class KatePluginGDBView : public QObject, public KXMLGUIClient, public KTextEditor::SessionConfigInterface

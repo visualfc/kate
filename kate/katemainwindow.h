@@ -233,7 +233,7 @@ Q_SIGNALS:
 public:
     void openUrl(const QString &name = QString());
 
-    QHash<KTextEditor::Plugin *, KTextEditor::Plugin::PluginView> &pluginViews()
+    QHash<KTextEditor::Plugin *, QObject *> &pluginViews()
     {
         return m_pluginViews;
     }
@@ -558,7 +558,7 @@ private:
     bool m_modignore;
 
     // all plugin views for this mainwindow, used by the pluginmanager
-    QHash<KTextEditor::Plugin *, KTextEditor::Plugin::PluginView> m_pluginViews;
+    QHash<KTextEditor::Plugin *, QObject *> m_pluginViews;
 
     // options: show statusbar + show path
     KToggleAction *m_paShowPath;

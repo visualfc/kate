@@ -233,7 +233,7 @@ KatePluginSearch::~KatePluginSearch()
     delete m_searchCommand;
 }
 
-KTextEditor::Plugin::PluginView KatePluginSearch::createView(KTextEditor::MainWindow *mainWindow)
+QObject *KatePluginSearch::createView(KTextEditor::MainWindow *mainWindow)
 {
     KatePluginSearchView *view = new KatePluginSearchView(this, mainWindow, KTextEditor::Editor::instance()->application());
     connect(m_searchCommand, &KateSearchCommand::setSearchPlace, view, &KatePluginSearchView::setSearchPlace);
@@ -241,7 +241,7 @@ KTextEditor::Plugin::PluginView KatePluginSearch::createView(KTextEditor::MainWi
     connect(m_searchCommand, &KateSearchCommand::setSearchString, view, &KatePluginSearchView::setSearchString);
     connect(m_searchCommand, &KateSearchCommand::startSearch, view, &KatePluginSearchView::startSearch);
     connect(m_searchCommand, SIGNAL(newTab()), view, SLOT(addTab()));
-    return KTextEditor::Plugin::PluginView(view, view);
+    return view;
 }
 
 bool ContainerWidget::focusNextPrevChild(bool next)

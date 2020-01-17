@@ -55,7 +55,7 @@ public:
     /**
      * Reimplemented to instantiate a PluginView for each MainWindow.
      */
-    KTextEditor::Plugin::PluginView createView(KTextEditor::MainWindow *mainWindow) override;
+    QObject *createView(KTextEditor::MainWindow *mainWindow) override;
 
     /**
      * Deletes all tools.

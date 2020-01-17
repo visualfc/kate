@@ -99,10 +99,9 @@ KateBuildPlugin::KateBuildPlugin(QObject *parent, const VariantList &)
 }
 
 /******************************************************************/
-KTextEditor::Plugin::PluginView KateBuildPlugin::createView(KTextEditor::MainWindow *mainWindow)
+QObject *KateBuildPlugin::createView(KTextEditor::MainWindow *mainWindow)
 {
-    auto view = new KateBuildView(this, mainWindow);
-    return KTextEditor::Plugin::PluginView(view, view);
+    return new KateBuildView(this, mainWindow);
 }
 
 /******************************************************************/

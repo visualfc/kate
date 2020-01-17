@@ -58,11 +58,10 @@ PluginKateTextFilter::~PluginKateTextFilter()
     }
 }
 
-KTextEditor::Plugin::PluginView PluginKateTextFilter::createView(KTextEditor::MainWindow *mainWindow)
+QObject *PluginKateTextFilter::createView(KTextEditor::MainWindow *mainWindow)
 {
     // create a plugin view
-    auto view = new PluginViewKateTextFilter(this, mainWindow);
-    return KTextEditor::Plugin::PluginView(view, view);
+    return new PluginViewKateTextFilter(this, mainWindow);
 }
 
 void PluginKateTextFilter::slotFilterReceivedStdout()

@@ -71,10 +71,9 @@ KateKonsolePlugin::~KateKonsolePlugin()
     qputenv("EDITOR", m_previousEditorEnv.data());
 }
 
-KTextEditor::Plugin::PluginView KateKonsolePlugin::createView(KTextEditor::MainWindow *mainWindow)
+QObject *KateKonsolePlugin::createView(KTextEditor::MainWindow *mainWindow)
 {
-    KateKonsolePluginView *view = new KateKonsolePluginView(this, mainWindow);
-    return KTextEditor::Plugin::PluginView(view, nullptr);
+    return new KateKonsolePluginView(this, mainWindow);
 }
 
 KTextEditor::ConfigPage *KateKonsolePlugin::configPage(int number, QWidget *parent)

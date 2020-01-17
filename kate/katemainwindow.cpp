@@ -1053,7 +1053,7 @@ void KateMainWindow::saveProperties(KConfigGroup &config)
     const auto plugins = KateApp::self()->pluginManager()->pluginList();
     for (const KatePluginInfo &item : plugins) {
         if (item.plugin && pluginViews().contains(item.plugin)) {
-            if (auto interface = qobject_cast<KTextEditor::SessionConfigInterface *>(pluginViews().value(item.plugin).object)) {
+            if (auto interface = qobject_cast<KTextEditor::SessionConfigInterface *>(pluginViews().value(item.plugin))) {
                 KConfigGroup group(config.config(), QStringLiteral("Plugin:%1:MainWindow:%2").arg(item.saveName()).arg(id));
                 interface->writeSessionConfig(group);
             }
@@ -1179,7 +1179,7 @@ QObject *KateMainWindow::pluginView(const QString &name)
         return nullptr;
     }
 
-    return m_pluginViews.contains(plugin) ? m_pluginViews.value(plugin).object : nullptr;
+    return m_pluginViews.contains(plugin) ? m_pluginViews.value(plugin) : nullptr;
 }
 
 void KateMainWindow::mousePressEvent(QMouseEvent *e)

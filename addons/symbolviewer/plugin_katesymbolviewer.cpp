@@ -386,10 +386,9 @@ KatePluginSymbolViewer::~KatePluginSymbolViewer()
     // qDebug()<<"~KatePluginSymbolViewer";
 }
 
-KTextEditor::Plugin::PluginView KatePluginSymbolViewer::createView(KTextEditor::MainWindow *mainWindow)
+QObject *KatePluginSymbolViewer::createView(KTextEditor::MainWindow *mainWindow)
 {
-    auto view = new KatePluginSymbolViewerView(this, mainWindow);
-    return KTextEditor::Plugin::PluginView(view, view);
+    return new KatePluginSymbolViewerView(this, mainWindow);
 }
 
 KTextEditor::ConfigPage *KatePluginSymbolViewer::configPage(int, QWidget *parent)

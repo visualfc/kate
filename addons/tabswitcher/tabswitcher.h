@@ -54,7 +54,7 @@ public:
     /**
      * Create a new tab switcher for @p mainWindow.
      */
-    KTextEditor::Plugin::PluginView createView(KTextEditor::MainWindow *mainWindow) override;
+    QObject *createView(KTextEditor::MainWindow *mainWindow) override;
 
 private:
     QList<TabSwitcherPluginView *> m_views;

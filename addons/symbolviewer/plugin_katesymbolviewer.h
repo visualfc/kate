@@ -155,7 +155,7 @@ public:
     explicit KatePluginSymbolViewer(QObject *parent = nullptr, const QList<QVariant> & = QList<QVariant>());
     ~KatePluginSymbolViewer() override;
 
-    KTextEditor::Plugin::PluginView createView(KTextEditor::MainWindow *mainWindow) override;
+    QObject *createView(KTextEditor::MainWindow *mainWindow) override;
 
     int configPages() const override
     {

@@ -62,10 +62,9 @@ KatePluginGDB::~KatePluginGDB()
 {
 }
 
-KTextEditor::Plugin::PluginView KatePluginGDB::createView(KTextEditor::MainWindow *mainWindow)
+QObject *KatePluginGDB::createView(KTextEditor::MainWindow *mainWindow)
 {
-    auto view = new KatePluginGDBView(this, mainWindow);
-    return KTextEditor::Plugin::PluginView(view, view);
+    return new KatePluginGDBView(this, mainWindow);
 }
 
 KatePluginGDBView::KatePluginGDBView(KTextEditor::Plugin *plugin, KTextEditor::MainWindow *mainWin)

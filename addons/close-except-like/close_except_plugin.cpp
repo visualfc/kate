@@ -49,10 +49,9 @@ CloseExceptPlugin::CloseExceptPlugin(QObject *application, const QList<QVariant>
 {
 }
 
-KTextEditor::Plugin::PluginView CloseExceptPlugin::createView(KTextEditor::MainWindow *parent)
+QObject *CloseExceptPlugin::createView(KTextEditor::MainWindow *parent)
 {
-    auto view = new CloseExceptPluginView(parent, this);
-    return KTextEditor::Plugin::PluginView(view, view);
+    return new CloseExceptPluginView(parent, this);
 }
 
 void CloseExceptPlugin::readSessionConfig(const KConfigGroup &config)

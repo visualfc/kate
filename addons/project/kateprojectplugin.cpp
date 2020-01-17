@@ -115,10 +115,9 @@ KateProjectPlugin::~KateProjectPlugin()
     delete m_weaver;
 }
 
-KTextEditor::Plugin::PluginView KateProjectPlugin::createView(KTextEditor::MainWindow *mainWindow)
+QObject *KateProjectPlugin::createView(KTextEditor::MainWindow *mainWindow)
 {
-    auto view = new KateProjectPluginView(this, mainWindow);
-    return KTextEditor::Plugin::PluginView(view, view);
+    return new KateProjectPluginView(this, mainWindow);
 }
 
 int KateProjectPlugin::configPages() const

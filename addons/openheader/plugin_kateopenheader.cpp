@@ -65,10 +65,9 @@ PluginKateOpenHeader::~PluginKateOpenHeader()
 {
 }
 
-KTextEditor::Plugin::PluginView PluginKateOpenHeader::createView(KTextEditor::MainWindow *mainWindow)
+QObject *PluginKateOpenHeader::createView(KTextEditor::MainWindow *mainWindow)
 {
-    auto view = new PluginViewKateOpenHeader(this, mainWindow);
-    return KTextEditor::Plugin::PluginView(view, view);
+    return new PluginViewKateOpenHeader(this, mainWindow);
 }
 
 void PluginKateOpenHeader::slotOpenHeader()
